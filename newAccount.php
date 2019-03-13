@@ -4,19 +4,18 @@
 
     if(isset($_POST['submit']))
     {
-       if($_POST)
+       if($_POST && !empty($_POST['password']) && !empty($_POST['password']) )
        {
             $account = filter_input(INPUT_POST,'account', FILTER_SANITIZE_STRING);
             $password = filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING);
             $confirm = filter_input(INPUT_POST,'con-password',FILTER_SANITIZE_STRING);
             $email = filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
 
-            if($password == $confirm)
+            if($password == $confirm )
             {
                header("location: firstProfile.php");
 
             }
-
        }
     }
 ?>
@@ -52,11 +51,11 @@
                            </div>
                            <div class="form-group">
                               <label for="password">Password</label>
-                              <input type="input" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
+                              <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
                            </div>
                            <div class="form-group">
                               <label for="con-password">Confirm Password</label>
-                              <input type="input" name="con-password" id="con-password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password Again">
+                              <input type="password" name="con-password" id="con-password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password Again">
                            </div>
                            <div class="form-group">
                               <label for="email">Email address</label>
