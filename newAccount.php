@@ -1,8 +1,8 @@
 <?php
-
-
-
-
+    if(isset($_POST['submit']))
+    {
+        header("location: firstProfile.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -28,8 +28,9 @@
 							<h1>Create Account</h1>
 						 </div>
 					</div>
-                   <form action="" method="post" name="login">
+                   <form action="newAccount.php" method="post" name="login">
                    <div class="form-group">
+                   <a class="float-right" href="Login.php">Login</a>
                               <label for="exampleInputEmail1">Account</label>
                               <input type="account" name="account" id="account"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Account">
                            </div>
@@ -49,7 +50,7 @@
                               <!-- <p class="text-center">By signing up you accept our <a href="#">Terms Of Use</a></p> -->
                            </div>
                            <div class="col-md-12 text-center ">
-                              <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Create Account</button>
+                              <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm" name="submit">Next</button>
                            </div>
                            <div class="col-md-12 ">
                               <div class="login-or">
