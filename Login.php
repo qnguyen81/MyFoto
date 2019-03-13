@@ -1,4 +1,6 @@
 <?php
+Session_start();
+      
 
 
 
@@ -26,22 +28,20 @@
 				<div class="myform form ">
 					 <div class="logo mb-3">
 						 <div class="col-md-12 text-center">
-							<h1>Login</h1>
+							<h1>MyFoto</h1>
 						 </div>
 					</div>
-                   <form action="" method="post" name="login">
+                   <form action="Login.php" method="post" name="login">
                            <div class="form-group">
-                              <label for="exampleInputEmail1">Email address</label>
-                              <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                              <label for="username">User Name </label>
+                              <input type="input" name="username"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter user name">
                            </div>
                            <div class="form-group">
                            <a class="float-right" href="#">Forgot?</a>
                               <label for="exampleInputEmail1">Password</label>
                               <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
                            </div>
-                           <div class="form-group">
-                              <!-- <p class="text-center">By signing up you accept our <a href="#">Terms Of Use</a></p> -->
-                           </div>
+
                            <div class="col-md-12 text-center ">
                               <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
                            </div>

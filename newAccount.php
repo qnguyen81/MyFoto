@@ -1,7 +1,23 @@
 <?php
+      require("connection.php");
+
+
     if(isset($_POST['submit']))
     {
-        header("location: firstProfile.php");
+       if($_POST)
+       {
+            $account = filter_input(INPUT_POST,'account', FILTER_SANITIZE_STRING);
+            $password = filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING);
+            $confirm = filter_input(INPUT_POST,'con-password',FILTER_SANITIZE_STRING);
+            $email = filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
+
+            if($password == $confirm)
+            {
+               header("location: firstProfile.php");
+
+            }
+
+       }
     }
 ?>
 
@@ -31,23 +47,20 @@
                    <form action="newAccount.php" method="post" name="login">
                    <div class="form-group">
                    <a class="float-right" href="Login.php">Login</a>
-                              <label for="exampleInputEmail1">Account</label>
-                              <input type="account" name="account" id="account"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Account">
+                              <label for="account">Account</label>
+                              <input type="input" name="account" id="account"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Account">
                            </div>
                            <div class="form-group">
-                              <label for="exampleInputEmail1">Password</label>
-                              <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
+                              <label for="password">Password</label>
+                              <input type="input" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
                            </div>
                            <div class="form-group">
-                              <label for="exampleInputEmail1">Confirm Password</label>
-                              <input type="con-password" name="con-password" id="con-password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password Again">
+                              <label for="con-password">Confirm Password</label>
+                              <input type="input" name="con-password" id="con-password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password Again">
                            </div>
                            <div class="form-group">
-                              <label for="exampleInputEmail1">Email address</label>
+                              <label for="email">Email address</label>
                               <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                           </div>
-                           <div class="form-group">
-                              <!-- <p class="text-center">By signing up you accept our <a href="#">Terms Of Use</a></p> -->
                            </div>
                            <div class="col-md-12 text-center ">
                               <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm" name="submit">Next</button>

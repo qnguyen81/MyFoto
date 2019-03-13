@@ -1,6 +1,9 @@
 <?php
 
+    if($_POST)
+    {
 
+    }
 
 
 ?>
@@ -10,7 +13,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Create Account</title>
+    <title>Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -31,16 +34,16 @@
                    <form action="" method="post" name="login">
                    <div class="form-group">
                    <a class="float-right" href="Login.php">Login</a>
-                              <label for="exampleInputEmail1">Full Name</label>
+                              <label for="account">Full Name</label>
                               <input type="account" name="account" id="account"  class="form-control" aria-describedby="emailHelp">
                            </div>
                            <div class="form-group">
-                              <label for="exampleInputEmail1">Birthday</label>
-                              <input type="date" name="password" id="password"  class="form-control" aria-describedby="emailHelp">
+                              <label for="birthday">Birthday</label>
+                              <input type="date" name="birthday" id="birthday"  class="form-control" aria-describedby="emailHelp">
                            </div>
                            <div class="form-group">
-                              <label for="exampleInputEmail1">Let people know more about you</label>
-                              <textarea class="form-control" id="textArea" rows="3"></textarea>  
+                              <label for="textarea">Let people know more about you</label>
+                              <textarea class="form-control" name = "textarea" id="textArea" rows="3"></textarea>  
                            </div>   
                            <div class="col-md-6">
                             <div class="form-group">
@@ -66,7 +69,6 @@
                         </form>
                 
 				</div>
-			</div> 
-    
+			</div>     
 </body>
 </html>
