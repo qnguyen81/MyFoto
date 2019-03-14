@@ -1,10 +1,17 @@
 <?php
       require("connection.php");
-      
-    if(isset($_POST['submit']))
+      $PassError= false;
+      $matchError = false;
+      $lengthError = false;
+      $nameError = false;
+    if($_POST&&isset($_POST['submit']))
     {
        if($_POST && !empty($_POST['password']) && !empty($_POST['password']) )
        {
+          if(strlen($_POST['password'])<6)
+          {
+            $lengthError = true;
+          }
             $account = filter_input(INPUT_POST,'account', FILTER_SANITIZE_STRING);
             $password = filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING);
             $confirm = filter_input(INPUT_POST,'con-password',FILTER_SANITIZE_STRING);
@@ -21,7 +28,7 @@
 
                if($row > 0 ) 
                {
-                echo("account already exist!") ;
+                  $nameError = true;
                }
                else
                {
@@ -31,12 +38,11 @@
                   $stmt-> bindValue(":account", $account);
                   $stmt->bindValue(":password",$password);
                   $stmt-> execute();
-
-
-               }
-               
-
-
+               }              
+            }
+            else
+            {
+               $matchError = true;
             }
        }
        else
@@ -74,14 +80,23 @@
                    <a class="float-right" href="Login.php">Login</a>
                               <label for="account">Account</label>
                               <input type="input" name="account" id="account"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Account">
+                              <?php if($nameError): ?>
+                              <a class="float-right" id='nameError'>This name is already taken</a>
+                              <?php endif?>
                            </div>
                            <div class="form-group">
                               <label for="password">Password</label>
                               <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
+                              <?php if($lengthError): ?>
+                              <a class="float-right" id='length'>Must be more than 6 chacter.</a>
+                              <?php endif?>
                            </div>
                            <div class="form-group">
                               <label for="con-password">Confirm Password</label>
                               <input type="password" name="con-password" id="con-password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password Again">
+                              <?php if($matchError): ?>
+                              <a class="float-right" id='length'>Pasword is not match.</a>
+                              <?php endif?>
                            </div>
                            <div class="form-group">
                               <label for="email">Email address</label>
