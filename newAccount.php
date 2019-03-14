@@ -1,7 +1,6 @@
 <?php
       require("connection.php");
-
-
+      
     if(isset($_POST['submit']))
     {
        if($_POST && !empty($_POST['password']) && !empty($_POST['password']) )
@@ -13,9 +12,36 @@
 
             if($password == $confirm )
             {
-               header("location: firstProfile.php");
+               // header("location: firstProfile.php");
+               $query = "SELECT userId FROM users WHERE UPPER(account) = UPPER(:account)";
+               $statement = $db-> prepare($query);
+               $statement-> bindValue(":account", $account);
+               $statement->execute();
+               $row = $statement -> fetch();
+
+               if($row > 0 ) 
+               {
+                  
+               }
+               else
+               {
+                  header("location: firstProfile.php");
+                  $insert = "INSERT INTO users (account,password) VALUES (:account,:password)";
+                  $stmt = $db-> prepare($insert);
+                  $stmt-> bindValue(":account", $account);
+                  $stmt->bindValue(":password",$password);
+                  $stmt-> execute();
+
+
+               }
+               
+
 
             }
+       }
+       else
+       {
+         die ('Please fill both the username and password field!');
        }
     }
 ?>
@@ -69,8 +95,8 @@
                                  <hr class="hr-or">
                               </div>
                            </div>
-                        </form>
-                
+                           
+                        </form>             
 				</div>
 			</div> 
     
