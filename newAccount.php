@@ -21,7 +21,7 @@
 
                if($row > 0 ) 
                {
-                  
+                echo("account already exist!") ;
                }
                else
                {
