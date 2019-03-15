@@ -1,5 +1,6 @@
 <?php
       require("connection.php");
+      session_start();
       $PassError= false;
       $matchError = false;
       $lengthError = false;
@@ -19,6 +20,7 @@
 
             if($password == $confirm )
             {
+               $pass = password_hash($password, PASSWORD_DEFAULT);
                // header("location: firstProfile.php");
                $query = "SELECT userId FROM users WHERE UPPER(account) = UPPER(:account)";
                $statement = $db-> prepare($query);
@@ -36,8 +38,9 @@
                   $insert = "INSERT INTO users (account,password) VALUES (:account,:password)";
                   $stmt = $db-> prepare($insert);
                   $stmt-> bindValue(":account", $account);
-                  $stmt->bindValue(":password",$password);
+                  $stmt->bindValue(":password",$pass);
                   $stmt-> execute();
+                  $_SESSION['user']= $account;
                }              
             }
             else

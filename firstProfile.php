@@ -1,8 +1,27 @@
 <?php
-
-    if($_POST)
+    include("connection.php");
+    session_start();
+    print_r($_SESSION);
+    if($_POST && !empty($_POST['firstName']) &&!empty($_POST['birthday']))
     {
+        print_r($_SESSION);
+        $firstName = filter_input(INPUT_POST,'firstName', FILTER_SANITIZE_STRING); 
+        $lastName = filter_input(INPUT_POST,'lastName', FILTER_SANITIZE_STRING); 
+        $fullName = $firstName.$lastName;
+        $description = filter_input(INPUT_POST,'description', FILTER_SANITIZE_STRING); 
+        $birthday = filter_input(INPUT_POST,'birthday', FILTER_SANITIZE_STRING); 
+        $user = $_SESSION['user'];
 
+        $query = "UPDATE users  SET firstName =:firstName,lastName=:lastName, birthday=:birthday, description = :description  WHERE UPPER(account) = UPPER(:user)";
+
+        $stmt = $db->prepare($query);
+        $stmt-> bindValue(":firstName",$firstName);
+        $stmt-> bindValue(":lastName",$lastName);
+        $stmt-> bindValue(":birthday",$birthday);
+        $stmt-> bindValue(":description",$description);
+        $stmt-> bindValue(":user", $_SESSION['user']);
+
+        $stmt->execute();
     }
 
 
@@ -34,8 +53,12 @@
                    <form action="" method="post" name="login">
                    <div class="form-group">
                    <a class="float-right" href="Login.php">Login</a>
-                              <label for="account">Full Name</label>
-                              <input type="account" name="account" id="account"  class="form-control" aria-describedby="emailHelp">
+                              <label for="account">First Name</label>
+                              <input type="input" name="firstName" id="firstName"  class="form-control" aria-describedby="emailHelp">
+                           </div>
+                           <div class="form-group">
+                              <label for="account">Last Name</label>
+                              <input type="input" name="lastName" id="lastName"  class="form-control" aria-describedby="emailHelp">
                            </div>
                            <div class="form-group">
                               <label for="birthday">Birthday</label>
@@ -43,18 +66,15 @@
                            </div>
                            <div class="form-group">
                               <label for="textarea">Let people know more about you</label>
-                              <textarea class="form-control" name = "textarea" id="textArea" rows="3"></textarea>  
+                              <textarea class="form-control" name = "description" id="description" rows="3"></textarea>  
                            </div>   
                            <div class="col-md-6">
                             <div class="form-group">
                                 <label>Choose your profile picture</label>
-                                <div class="input-group">
-                                    <span class="input-group-btn">  
-                                        <span class="btn btn-default btn-file">
-                                            <input type="file" id="imgInp">
-                                        </span>
-                                    </span>
-                                </div>
+                                    <div class="custom-file">
+                                      <input type="file" class="custom-file-input" id="customFile">
+                                      <label class="custom-file-label" for="customFile">Choose file</label>
+                                 </div>  
                                 <img id='img-upload'/>
                             </div>
                         </div>
