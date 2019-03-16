@@ -1,6 +1,34 @@
 <?php
 Session_start();
-      
+include('connection.php');
+      if($_POST && isset($_POST['username']) && isset($_POST['password']))
+      {
+         $user = filter_input(INPUT_POST,'username', FILTER_SANITIZE_STRING);
+         $password = filter_input(INPUT_POST,'password', FILTER_SANITIZE_STRING);
+
+         $query = "SELECT account, password FROM users WHERE account = :user";
+         $stmt = $db-> prepare($query);
+         $stmt->bindValue(":user",$user);
+         $stmt-> execute();
+         $row = $stmt->fetch();
+
+         if($row >0)
+         {
+            if(password_verify($password, $row['password']))
+            {
+               header("location:main.php");
+               $_SESSION['user']= $user;
+            }
+            else
+            {
+               echo "incorrrect password";
+            }
+         }
+         else
+         {
+            echo "accountis not correct";
+         }
+      }
 
 
 

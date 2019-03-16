@@ -2,7 +2,7 @@
     include("connection.php");
     session_start();
     print_r($_SESSION);
-    if($_POST && !empty($_POST['firstName']) &&!empty($_POST['birthday']))
+    if($_POST && !empty($_POST['firstName']) &&!empty($_POST['birthday']) && isset($_POST['create']))
     {
         print_r($_SESSION);
         $firstName = filter_input(INPUT_POST,'firstName', FILTER_SANITIZE_STRING); 
@@ -22,9 +22,17 @@
         $stmt-> bindValue(":user", $_SESSION['user']);
 
         $stmt->execute();
+
+        if($stmt)
+        {
+           header("location:main.php");
+        }
+        else
+        {
+           echo "a problem occured.";
+        }
+
     }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -79,15 +87,14 @@
                             </div>
                         </div>
                            <div class="col-md-12 text-center ">
-                              <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm">Create Account</button>
+                              <button type="submit" name ="create" class=" btn btn-block mybtn btn-primary tx-tfm">Create Account</button>
                            </div>
                            <div class="col-md-12 ">
                               <div class="login-or">
                                  <hr class="hr-or">
                               </div>
                            </div>
-                        </form>
-                
+                        </form>              
 				</div>
 			</div>     
 </body>

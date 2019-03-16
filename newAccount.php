@@ -9,7 +9,7 @@
     {
        if($_POST && !empty($_POST['password']) && !empty($_POST['password']) )
        {
-          if(strlen($_POST['password'])<6)
+          if(strlen($_POST['password']) < 6)
           {
             $lengthError = true;
           }
