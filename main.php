@@ -1,8 +1,14 @@
 <?php 
     session_start();
+    require('connection.php');
         if(isset($_SESSION['user']))
         {
+            $user = $_SESSION['user'];
             echo "welcome"."  ".$_SESSION['user']; 
+            $query = "SELECT avatar FROM users WHERE account = :user";
+            $stmt = $db-> prepare($query);
+            $stmt->bindValue(":user",$user);
+            $stmt-> execute();
         }
         else
         {
@@ -21,6 +27,8 @@
     <script src="main.js"></script>
 </head>
 <body>
-    
+    <?php while($row = $stmt -> fetch()):?>
+        <?= "<img src='uploads/".$row['avatar']."' alt='test' />"?>
+  <?php endwhile ?>
 </body>
 </html>
