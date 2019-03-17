@@ -112,11 +112,9 @@
                               <div class="login-or">
                                  <hr class="hr-or">
                               </div>
-                           </div>
-                           
+                           </div>                          
                         </form>             
 				</div>
-			</div> 
-    
+			</div>   
 </body>
 </html>
