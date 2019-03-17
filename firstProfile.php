@@ -12,7 +12,7 @@
         $birthday = filter_input(INPUT_POST,'birthday', FILTER_SANITIZE_STRING); 
         $user = $_SESSION['user'];
 
-        if(isset($_POST['file']))
+        if(file_exists($_FILES['file']['tmp_name']) || is_uploaded_file($_FILES['file']['tmp_name']) )
         {
          function file_upload_path($original_filename, $upload_subfolder_name = 'uploads') {
             $current_folder = dirname(__FILE__);
