@@ -1,9 +1,9 @@
 <?php 
 session_start();
 require("connection.php");
-        $query = "SELECT account FROM users";
-        $stmt = $db-> prepare($query);
-        $stmt-> execute();
+    $query = "SELECT account FROM users";
+    $stmt = $db-> prepare($query);
+    $stmt-> execute();
 ?>
 
 <!DOCTYPE html>
