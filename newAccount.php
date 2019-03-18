@@ -21,7 +21,6 @@
             if($password == $confirm )
             {
                $pass = password_hash($password, PASSWORD_DEFAULT);
-               // header("location: firstProfile.php");
                $query = "SELECT userId FROM users WHERE UPPER(account) = UPPER(:account)";
                $statement = $db-> prepare($query);
                $statement-> bindValue(":account", $account);
@@ -50,7 +49,7 @@
        }
        else
        {
-         die ('Please fill both the username and password field!');
+         echo'Please fill both the username and password field!';
        }
     }
 ?>
@@ -65,56 +64,47 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles.css">
 </head>
 <body>
     <div class="container">
         <div class="row">
 			<div class="col-md-5 mx-auto">
-			<div id="first">
-				<div class="myform form ">
-					 <div class="logo mb-3">
-						 <div class="col-md-12 text-center">
-							<h1>Create Account</h1>
-						 </div>
+				<div class="logo mb-3">
 					</div>
                    <form action="newAccount.php" method="post" name="login">
+                   <h3>Create Account</h3>
                    <div class="form-group">
                    <a class="float-right" href="Login.php">Login</a>
                               <label for="account">Account</label>
-                              <input type="input" name="account" id="account"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Account">
+                              <input type="input" name="account" id="account"  class="form-control" placeholder="Account">
                               <?php if($nameError): ?>
                               <a class="float-right" id='nameError'>This name is already taken</a>
                               <?php endif?>
                            </div>
                            <div class="form-group">
                               <label for="password">Password</label>
-                              <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
+                              <input type="password" name="password" id="password"  class="form-control" placeholder="Password">
                               <?php if($lengthError): ?>
                               <a class="float-right" id='length'>Must be more than 6 chacter.</a>
                               <?php endif?>
                            </div>
                            <div class="form-group">
                               <label for="con-password">Confirm Password</label>
-                              <input type="password" name="con-password" id="con-password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password Again">
+                              <input type="password" name="con-password" id="con-password"  class="form-control" placeholder="Enter Password Again">
                               <?php if($matchError): ?>
                               <a class="float-right" id='length'>Pasword is not match.</a>
                               <?php endif?>
                            </div>
                            <div class="form-group">
                               <label for="email">Email address</label>
-                              <input type="email" name="email"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                              <input type="email" name="email"  class="form-control" id="email"  placeholder="Email">
                            </div>
                            <div class="col-md-12 text-center ">
                               <button type="submit" class=" btn btn-block mybtn btn-primary tx-tfm" name="submit">Next</button>
-                           </div>
-                           <div class="col-md-12 ">
-                              <div class="login-or">
-                                 <hr class="hr-or">
-                              </div>
                            </div>                          
-                        </form>             
+                   </form>             
 				</div>
-			</div>   
+		</div>   
 </body>
 </html>

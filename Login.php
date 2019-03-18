@@ -6,7 +6,7 @@ include('connection.php');
          $user = filter_input(INPUT_POST,'username', FILTER_SANITIZE_STRING);
          $password = filter_input(INPUT_POST,'password', FILTER_SANITIZE_STRING);
 
-         $query = "SELECT account, password FROM users WHERE account = :user";
+         $query = "SELECT account, password,role FROM users WHERE account = :user";
          $stmt = $db-> prepare($query);
          $stmt->bindValue(":user",$user);
          $stmt-> execute();
@@ -16,8 +16,15 @@ include('connection.php');
          {
             if(password_verify($password, $row['password']))
             {
-               header("location:main.php");
-               $_SESSION['user']= $user;
+               if($row['role']=='a'){
+                  header("location:admin.php");
+                  $_SESSION['user']= $user;
+               }
+               else
+               {
+                  header("location:main.php");
+                  $_SESSION['user']= $user;
+               }
             }
             else
             {
@@ -61,12 +68,12 @@ include('connection.php');
 					</div>
                    <form action="Login.php" method="post" name="login">
                            <div class="form-group">
-                              <label for="username">User Name </label>
+                              <label for="username">User Name <i class="fas fa-user"></i></label>
                               <input type="input" name="username"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter user name">
                            </div>
                            <div class="form-group">
                            <a class="float-right" href="#">Forgot?</a>
-                              <label for="exampleInputEmail1">Password</label>
+                              <label for="exampleInputEmail1">Password <i class="fas fa-lock"></i></label>
                               <input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password">
                            </div>
 

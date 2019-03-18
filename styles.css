@@ -1,5 +1,23 @@
 .img-circle
 {
-    width:  800px;
-    height: 400px;
+    width:  70px;
+    height: 35px;
 }
+
+
+/* .container {
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+nav
+{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

@@ -4,7 +4,6 @@
         if(isset($_SESSION['user']))
         {
             $user = $_SESSION['user'];
-            echo "welcome"."  ".$_SESSION['user']; 
             $query = "SELECT avatar FROM users WHERE account = :user";
             $stmt = $db-> prepare($query);
             $stmt->bindValue(":user",$user);
@@ -29,8 +28,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Admin  [<?=$_SESSION['user']?>]</a>
+  <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
     <li class="nav-item">
         <?php while($row = $stmt -> fetch()):?>
@@ -38,13 +38,13 @@
         <?php endwhile ?>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="#">Newsfeed</a>
+        <a class="nav-link" href="#">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">New Post</a>
+        <a class="nav-link" href="#">Manage Post</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Profile</a>
+        <a class="nav-link" href="#">Manage User</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="logout.php">Logout</a>
@@ -52,6 +52,5 @@
     </ul>
   </div>
 </nav>
-
 </body>
 </html>
