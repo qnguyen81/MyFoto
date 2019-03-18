@@ -1,5 +1,5 @@
 <?php
-    include("connection.php");
+    require("connection.php");
     session_start();
     print_r($_SESSION);
     if($_POST && !empty($_POST['firstName']) &&!empty($_POST['birthday']) && isset($_POST['create']))

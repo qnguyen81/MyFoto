@@ -1,6 +1,6 @@
 <?php
 Session_start();
-include('connection.php');
+require('connection.php');
       if($_POST && isset($_POST['username']) && isset($_POST['password']))
       {
          $user = filter_input(INPUT_POST,'username', FILTER_SANITIZE_STRING);
@@ -36,10 +36,6 @@ include('connection.php');
             echo "accountis not correct";
          }
       }
-
-
-
-
 ?>
 
 <!DOCTYPE html>
