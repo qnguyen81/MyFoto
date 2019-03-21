@@ -1,9 +1,6 @@
 <?php 
 session_start();
 require("connection.php");
-    $query = "SELECT * FROM users";
-    $stmt = $db-> prepare($query);
-    $stmt-> execute();
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +15,7 @@ require("connection.php");
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="styles.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -40,18 +37,8 @@ require("connection.php");
     </ul>
   </div>
 </nav>
-<div class="container">
-  	<h1 class="mt-5 mb-5">User </h1>
-  	  <div class="libraries card-columns">
-        <?php while($row = $stmt -> fetch()):?>
-  		 <div class="library card mb-4">
-          <div class="card-body">
-            <h3 class="card-title"><?=$row['account']?></h3>
-            <div class="card-text mb-2"><?=$row['email']?></div>
-            <a href="editUser.php" class="btn btn-primary">Edit</a> 
-        </div>
-  </div>
-  <?php endwhile ?>
+<div>
+    
 </div>
 </body>
 </html>

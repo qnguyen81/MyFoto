@@ -9,6 +9,7 @@
         $lastName = filter_input(INPUT_POST,'lastName', FILTER_SANITIZE_STRING); 
         $fullName = $firstName.$lastName;
         $description = filter_input(INPUT_POST,'description', FILTER_SANITIZE_STRING); 
+        $email = filter_input(INPUT_POST,'email', FILTER_SANITIZE_EMAIL);
         $birthday = filter_input(INPUT_POST,'birthday', FILTER_SANITIZE_STRING); 
         $user = $_SESSION['user'];
 
@@ -50,10 +51,10 @@
         }
         else
         {
-           $img = "default.jpg";
+           $img = "default.png";
         }
 
-        $query = "UPDATE users  SET firstName =:firstName,lastName=:lastName, birthday=:birthday, description = :description ,avatar=:photo WHERE UPPER(account) = UPPER(:user)";
+        $query = "UPDATE users  SET firstName =:firstName,lastName=:lastName, birthday=:birthday, description = :description ,avatar=:photo ,email = :email WHERE UPPER(account) = UPPER(:user)";
 
         $stmt = $db->prepare($query);
         $stmt-> bindValue(":firstName",$firstName);
@@ -61,6 +62,7 @@
         $stmt-> bindValue(":birthday",$birthday);
         $stmt-> bindValue(":photo",$img);
         $stmt-> bindValue(":description",$description);
+        $stmt-> bindValue(":email",$email);
         $stmt-> bindValue(":user", $_SESSION['user']);
         $stmt->execute();
 

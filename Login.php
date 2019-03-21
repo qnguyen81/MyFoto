@@ -49,14 +49,13 @@ require('connection.php');
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles.css">
 </head>
 <body>
 
       <div class="container">
         <div class="row">
 			<div class="col-md-5 mx-auto">
-			<div id="first">
-				<div class="myform form ">
 					 <div class="logo mb-3">
 						 <div class="col-md-12 text-center">
 							<h1>MyFoto</h1>
@@ -87,8 +86,8 @@ require('connection.php');
                               <p class="text-center">Don't have account? <a href="newAccount.php" id="signup">Sign up here</a></p>
                            </div>
                         </form>
-                
 				</div>
-			</div> 
+          </div>
+	   </div> 
 </body>
 </html>
