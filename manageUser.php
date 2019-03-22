@@ -41,17 +41,14 @@ require("connection.php");
   </div>
 </nav>
 <div class="container">
-  	<h1 class="mt-5 mb-5">User </h1>
-  	  <div class="libraries card-columns">
-        <?php while($row = $stmt -> fetch()):?>
-  		 <div class="library card mb-4">
-          <div class="card-body">
-            <h3 class="card-title"><?=$row['account']?></h3>
-            <div class="card-text mb-2"><?=$row['email']?></div>
-            <a href="editUser.php" class="btn btn-primary">Edit</a> 
-        </div>
-  </div>
+<h1 class="mt-5 mb-5">User List </h1>
+<?php while($row = $stmt -> fetch()):?>
+<div class="list-group">
+  <a href="#" class="list-group-item"><?=$row['account']?></a>
+</div>
   <?php endwhile ?>
+
+  
 </div>
 </body>
 </html>
