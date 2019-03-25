@@ -18,3 +18,13 @@
     text-align: center;
   }
 
+.container
+{
+    padding: 30px;
+}
+
+.card
+{
+    padding: 50px;
+}
+
