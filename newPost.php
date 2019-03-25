@@ -4,6 +4,9 @@
 
     if(isset($_POST['submit']))
     {
+        $query = "SELECT * FROM users";
+        $stmt = $db-> prepare($query);
+        $stmt-> execute();
         if(!empty($_POST['status'])){
             $content = filter_input(INPUT_POST,'status', FILTER_SANITIZE_STRING);
             $user = $_SESSION['user'];
@@ -13,6 +16,7 @@
             $stmt->bindValue(":user",$user);
             $stmt->bindValue(":content",$content);
             $stmt->execute();
+            header("location:main.php?id=$_GET['id']");
         } 
     }
     else
@@ -65,6 +69,9 @@
                             </div>
                         </div>
                         <form action="newPost.php" method="post" enctype='multipart/form-data'>
+                        <?php while($row = $stmt -> fetch()):?>
+                        <input type="hidden" name="id" value="<?=$row['userId'] ?>">
+                        <?php endwhile ?>
                             <div class="form-group">
                                 <label for="status"></label>
                                 <TextArea class="form-control" rows="5" name='status'

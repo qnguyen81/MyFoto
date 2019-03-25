@@ -3,6 +3,12 @@ session_start();
 require("connection.php");
 if(isset($_SESSION['user']))
 {
+    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $queryall = "SELECT * FROM users WHERE userId = :id";
+    $stmt= $db->prepare($queryall);
+    $stmt -> bindValue(":id",$id);
+    $stmt->execute();
+
   if(isset($_POST['delete']))
   {
     $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
@@ -11,6 +17,24 @@ if(isset($_SESSION['user']))
     	$statement->bindValue(':id', $id, PDO::PARAM_INT);
        $statement->execute();
        header("location:manageUser.php");
+  }
+  if(isset($_POST['save']))
+  {
+    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $firstName = filter_input(INPUT_POST, 'firstName', FILTER_SANITIZE_STRING);
+    $lastName = filter_input(INPUT_POST, 'lastName', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+    $account = filter_input(INPUT_POST, 'account', FILTER_SANITIZE_STRING);
+
+    $update = "UPDATE users SET firstName = :firstName , lastName = :lastName , account =:account WHERE userId = :id";
+
+    $stmt1 = $db->prepare($update);
+    $stmt1-> bindValue(":firstName",$firstName);
+    $stmt1-> bindValue(":lastName",$lastName);
+    $stmt1-> bindValue(":account",$account);
+    $stmt1->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt1-> execute();
+    header("location:manageUser.php");
   }
 }
 else
@@ -67,45 +91,39 @@ else
                                 <div class="col-md-12 text-center">
                                 </div>
                             </div>
-                            <form action="editUser.php" method="post" enctype='multipart/form-data'>                           
+                            <form action="editUser.php" method="post" enctype='multipart/form-data'>
+                            <?php while($row = $stmt -> fetch()):?>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">First name:</label>
                                     <div class="col-lg-8">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" name='firstName' type="text" value='<?=$row['firstName']?>'>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">Last name:</label>
                                     <div class="col-lg-8">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" name='lastName' type="text" value='<?=$row['lastName']?>'>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">Email:</label>
                                     <div class="col-lg-8">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" name='email' type="text" value='<?=$row['email']?>'>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Username:</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" name='account' type="text" value='<?=$row['account']?>'>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Password:</label>
-                                    <div class="col-md-8">
-                                        <input class="form-control" type="password">
-                                    </div>
                                     <hr>
-                                        <button type="submit" class="btn btn-outline-primary" name='save'>Save Changes</button>
+                                        <input type="submit" class="btn btn-outline-primary" name='save' value = 'Save Change'>
                                         <input type="submit" value="Delete" class="btn btn-outline-danger" name='delete' onclick="return confirm('Are you sure you wish to delete this User?')">
-                                </div>
+                                <?php endwhile ?>
                             </form>
                         </div>
                     </div>
-
-
 </body>
 
 </html>

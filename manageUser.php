@@ -5,7 +5,7 @@ require("connection.php");
     $stmt = $db-> prepare($query);
     $stmt-> execute();
 
-    if(isset($_POST['delete']))
+    if(isset($_POST['move']))
     {
       header("location:editUser.php");
     }
@@ -49,14 +49,14 @@ require("connection.php");
     </nav>
     <div class="container">
         <h1 class="mt-5 mb-5">User List </h1>
-        <form action="editUser.php" method="post" > 
-        <?php while($row = $stmt -> fetch()):?>
-        <div class="list-group">
-        <input type="hidden" name="id" value="<?=$row['userId'] ?>">
-          <li class="list-group-item"><?=$row['account']?></li>
-          <input type="submit" value="Edit" class="btn btn-outline-danger" name='delete'>
-        </div>
-        <?php endwhile ?>
+        <form action="editUser.php" method="post">
+            <?php while($row = $stmt -> fetch()):?>
+            <div class="list-group">
+                <input type="hidden" name="id" value="<?=$row['userId'] ?>">
+                <li class="list-group-item"><?=$row['account']?></li>
+                <input type="submit" value="Edit" class="btn btn-outline-danger" name='move'>
+            </div>
+            <?php endwhile ?>
         </form>
 
     </div>
