@@ -6,7 +6,7 @@ require('connection.php');
          $user = filter_input(INPUT_POST,'username', FILTER_SANITIZE_STRING);
          $password = filter_input(INPUT_POST,'password', FILTER_SANITIZE_STRING);
 
-         $query = "SELECT account, password,role FROM users WHERE account = :user";
+         $query = "SELECT * FROM users WHERE account = :user";
          $stmt = $db-> prepare($query);
          $stmt->bindValue(":user",$user);
          $stmt-> execute();
@@ -24,6 +24,7 @@ require('connection.php');
                {
                   header("location:main.php");
                   $_SESSION['user']= $user;
+                  $_SESSION['userId'] = $row['userId'];
                }
             }
             else

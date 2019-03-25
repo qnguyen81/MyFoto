@@ -1,16 +1,19 @@
 <?php 
     session_start();
     require('connection.php');
+    print_r( $_SESSION['userId']);
     if(isset($_POST['post']))
     {
         if(!empty($_POST['status'])){
             $content = filter_input(INPUT_POST,'status', FILTER_SANITIZE_STRING);
             $user = $_SESSION['user'];
+            $userId = $_SESSION['userId'];
             include('upload.php');
-            $query2 = "INSERT INTO post (userName, content) VALUES (:user, :content)";
+            $query2 = "INSERT INTO post (userName, content,userId) VALUES (:user, :content,:userId)";
             $stmt2 = $db->prepare($query2);
             $stmt2->bindValue(":user",$user);
             $stmt2->bindValue(":content",$content);
+            $stmt2->bindValue(":userId",$userId);
             $stmt2->execute();
             header("location:main.php");
         } 
@@ -24,11 +27,10 @@
             $stmt->bindValue(":user",$user);
             $stmt-> execute();
 
-            $query1 = "SELECT * FROM post,users WHERE ";
+            $query1 = "SELECT * FROM post p JOIN users u ON p.userId = u.userId ORDER BY timeStamp";
             $stmt1 = $db-> prepare($query1);
             $stmt1->bindValue(":user",$user);
-            $stmt1-> execute();
-            
+            $stmt1-> execute(); 
 
         }
         else
@@ -80,16 +82,15 @@
                                 <TextArea class="form-control" rows="5" name='status'
                                     placeholder="What are you thinking?"></TextArea>
                             </div>
-                            <div class="custom-file">
-                                <input type="file" name='file'>
+                            <div class="custom-file">                         
+                                <input type="file" name='file' class="inputfile">
                                 <label for="file"></label>
                             </div>
                         
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" id="post" class="btn btn-outline-primary" name="post"> Post <i
-                                class="fas fa-paper-plane"></i></button>
+                        <button type="submit" id="post" class="btn btn-outline-primary" name="post"> Post <i class="fas fa-paper-plane"></i></button>
                     </div>
     </form>
                 </div>
