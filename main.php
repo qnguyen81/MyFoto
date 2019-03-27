@@ -1,6 +1,7 @@
 <?php 
     session_start();
     require('connection.php');
+    require_once("composer/vendor/autoload.php");
     print_r( $_SESSION['userId']);
     if(isset($_POST['post']))
     {
@@ -63,9 +64,9 @@
         <ul class="myfoto" role="navigation">
             <li><i class="fas fa-home"></i>Home</li>
             <li class="twitter__bird"><i class="fas fa-spa"></i></li>
-            <li><i class="fas fa-user-circle"></i></li>
-            <li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">New
-                    Post</button></li>
+            <li><button type="button" class="fas fa-plus-square"data-toggle="modal" data-target="#myModal"></button></li>
+            <li><i class="fas fa-user-alt" class="nav-item dropdown"></i></li>
+            <li><i class="fas fa-sign-out-alt"></i></li>
         </ul>
         <!-- The Modal -->
         <div class="modal fade" id="myModal">

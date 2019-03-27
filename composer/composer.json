@@ -1,0 +1,5 @@
+{
+    "require": {
+        "stfalcon/tinymce-bundle": "^2.3"
+    }
+}
