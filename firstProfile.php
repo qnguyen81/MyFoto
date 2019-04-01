@@ -1,10 +1,8 @@
 <?php
     require("connection.php");
     session_start();
-    print_r($_SESSION);
     if($_POST && !empty($_POST['firstName']) &&!empty($_POST['birthday']) && isset($_POST['create']))
     {
-        print_r($_SESSION);
         $firstName = filter_input(INPUT_POST,'firstName', FILTER_SANITIZE_STRING); 
         $lastName = filter_input(INPUT_POST,'lastName', FILTER_SANITIZE_STRING); 
         $fullName = $firstName.$lastName;
@@ -54,7 +52,7 @@
            $img = "default.png";
         }
 
-        $query = "UPDATE users  SET firstName =:firstName,lastName=:lastName, birthday=:birthday, description = :description ,avatar=:photo ,email = :email WHERE UPPER(account) = UPPER(:user)";
+        $query = "UPDATE users SET firstName =:firstName,lastName=:lastName, birthday=:birthday, description = :description ,avatar=:photo ,email = :email WHERE UPPER(account) = UPPER(:user)";
 
         $stmt = $db->prepare($query);
         $stmt-> bindValue(":firstName",$firstName);
@@ -68,7 +66,13 @@
 
         if($stmt)
         {
-           header("location:main.php");
+         if($_POST['captcha'] == $_SESSION['captcha_code']){
+            echo "correct captcha";
+            header("location:main.php");
+         }else{
+            echo "Invalid captcha";
+         }
+           
         }
         else
         {
@@ -127,6 +131,10 @@
                                  </div>  
                                 <img id='img-upload'/>
                             </div>
+                            <div class="form-group">
+                            <img src="captcha.php" />
+                              <input type="text" name="captcha" />
+                           </div>  
                         </div>
                            <div class="col-md-12 text-center ">
                               <button type="submit" name ="create" class=" btn btn-block mybtn btn-primary tx-tfm">Create Account</button>

@@ -40,6 +40,7 @@
                   $stmt->bindValue(":password",$pass);
                   $stmt-> execute();
                   $_SESSION['user']= $account;
+                  $_SESSION['userId'] = $row['userId'];
                }              
             }
             else

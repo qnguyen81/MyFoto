@@ -5,10 +5,10 @@ require("connection.php");
     $stmt = $db-> prepare($query);
     $stmt-> execute();
 
-    if(isset($_POST['move']))
-    {
-      header("location:editUser.php");
-    }
+    // if(isset($_POST['move']))
+    // {
+    //   header("location:editUser.php"); 
+    // }
 ?>
 
 <!DOCTYPE html>
@@ -17,9 +17,8 @@ require("connection.php");
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>Manage User</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
     <script src="main.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -49,15 +48,14 @@ require("connection.php");
     </nav>
     <div class="container">
         <h1 class="mt-5 mb-5">User List </h1>
-        <form action="editUser.php" method="post">
+        <!-- <form action="editUser.php" method="post"> -->
             <?php while($row = $stmt -> fetch()):?>
             <div class="list-group">
-                <input type="hidden" name="id" value="<?=$row['userId'] ?>">
-                <li class="list-group-item"><?=$row['account']?></li>
-                <input type="submit" value="Edit" class="btn btn-outline-danger" name='move'>
+                <input type="hidden" name="id" value="<?=$row['userId']?>">
+                <li class="list-group-item"><?=$row['account']?> <a class="float-right" href= 'editUser.php?id=<?=$row['userId']?>' id="edit">Edit</a> </li>
             </div>
             <?php endwhile ?>
-        </form>
+        <!-- </form> -->
 
     </div>
 </body>

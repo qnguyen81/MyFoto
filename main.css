@@ -5,7 +5,7 @@ body {
   }
 main{
     padding: 10px 20px;
-    width: 70%;
+    width: 60%;
     min-height: 400px;
     min-width: 400px;
     background: #fff;
@@ -16,9 +16,33 @@ ul {
     padding: 0;
     list-style: none;
   }
+
+  a:link
+  {
+    color: gray;
+    text-decoration: none;
+  }
+  .square {
+    height: auto;
+    width: 100%;
+    padding:10px;
+    margin: 0 auto;
+}
+
+.img-responsive
+{
+  max-width: 100%;
+    max-height: 100%;
+}
   .myfoto {
     display: flex;
   } 
+
+  .nav-link{
+    color: black;
+    padding: 0;
+    margin: 0;
+  }
 
   .twitter__bird {
     margin-left: auto;
@@ -36,7 +60,16 @@ ul {
   }
   .myfoto li {
     cursor: pointer;
+    height: auto;
   }
+  .myfoto li a{
+    color: rgba(117,117,117 ,1);
+  }
+
+  .myfoto li a:hover{
+    color: rgba(85,172,238 ,1);
+  }
+  
   .myfoto li:hover{
     color: rgba(85,172,238 ,1);
   }
@@ -55,18 +88,18 @@ ul {
   {
     font-size: 1.3em; 
   } */
-  /* .myfoto li > button{
+  .myfoto li > button{
     font-size: 1em;
     border: 0;
     background: rgba(85,172,238 ,1);
     color: #fff;
     border-radius: 100px;
-  } */
+  }
 
   .post
 { 
-    width: 50%;
-    margin: 10px;
+    width: 65%;
+    margin: 30px;
     padding: 5px;
     display: flex;
     align-items: center;
@@ -84,6 +117,7 @@ ul {
 }
 .btn
 {   
+  margin: 0;
     padding: 0px;
     font-size: 12px;
     width: 80px;  height: 25px;
@@ -93,6 +127,13 @@ ul {
 {
     margin-right: 10px;
 }
+
+/* .like
+{
+  display: flex;
+  justify-content: space-around;
+  height: 30px;
+} */
 
 small
 {

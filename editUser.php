@@ -1,32 +1,36 @@
 <?php 
 session_start();
 require("connection.php");
+print_r($_GET['id']);
 if(isset($_SESSION['user']))
 {
-    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    if(isset($_POST['delete']))
+    {
+    // $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $id= $_GET['id'];
+      $query = "DELETE FROM users WHERE userId = :id";
+        $statement = $db->prepare($query);
+      $statement->bindValue(':id',$id);
+     $statement->execute();
+     header("location:manageUser.php");
+    }
+    //$id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $id= $_GET['id'];
     $queryall = "SELECT * FROM users WHERE userId = :id";
     $stmt= $db->prepare($queryall);
     $stmt -> bindValue(":id",$id);
     $stmt->execute();
 
-  if(isset($_POST['delete']))
-  {
-    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
-   	 	$query = "DELETE FROM users WHERE userId = :id LIMIT 1";
-   		 $statement = $db->prepare($query);
-    	$statement->bindValue(':id', $id, PDO::PARAM_INT);
-       $statement->execute();
-       header("location:manageUser.php");
-  }
   if(isset($_POST['save']))
   {
-    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    //$id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $id= $_GET['id'];
     $firstName = filter_input(INPUT_POST, 'firstName', FILTER_SANITIZE_STRING);
     $lastName = filter_input(INPUT_POST, 'lastName', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
     $account = filter_input(INPUT_POST, 'account', FILTER_SANITIZE_STRING);
 
-    $update = "UPDATE users SET firstName = :firstName , lastName = :lastName , account =:account WHERE userId = :id";
+    $update = "UPDATE users SET firstName =:firstName , lastName=:lastName , account =:account WHERE userId = :id";
 
     $stmt1 = $db->prepare($update);
     $stmt1-> bindValue(":firstName",$firstName);
@@ -51,7 +55,6 @@ else
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
     <script src="main.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -91,8 +94,10 @@ else
                                 <div class="col-md-12 text-center">
                                 </div>
                             </div>
-                            <form action="editUser.php" method="post" enctype='multipart/form-data'>
+                            <form action="actions.php" method="post">
                             <?php while($row = $stmt -> fetch()):?>
+                            <input type="hidden" name="id" value="<?=$row['userId']?>">
+                            <input type="hidden" name="account" value="<?=$row['account']?>">
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">First name:</label>
                                     <div class="col-lg-8">
@@ -118,7 +123,7 @@ else
                                     </div>
                                 </div>
                                     <hr>
-                                        <input type="submit" class="btn btn-outline-primary" name='save' value = 'Save Change'>
+                                        <input type="submit" class="btn btn-outline-primary" name='save' value = 'Save Change'  onclick="return confirm('Are you sure you wish to modify this User?')">
                                         <input type="submit" value="Delete" class="btn btn-outline-danger" name='delete' onclick="return confirm('Are you sure you wish to delete this User?')">
                                 <?php endwhile ?>
                             </form>
