@@ -30,3 +30,32 @@ function myFunction() {
   }
 }
 
+$(document).ready(function() {
+  $.ajaxSetup({
+      cache: false
+  });
+  $('#search').keyup(function() {
+      $('#result').html('');
+      $('#state').val('');
+      var searchField = $('#search').val();
+      var expression = new RegExp(searchField, "i");
+      $.getJSON('data.json', function(data) {
+          $.each(data, function(key, value) {
+              if (value.account.search(expression) != -1 || value.lastName.search(expression) != -1) {
+                  $('#result').append(
+                      '<input type="hidden" name="id" value="'+value.userId+'"> <li class="list-group-item link-class"><img src="uploads/' + value.avatar +
+                      '" height="40" width="40" class="img-thumbnail" /> ' + value.account + ' | <span class="text-muted">' + value.lastName +'| <a class="float-right" href="editUser.php?id='+ value.userId +'" id="edit">Edit</a></span></li>');
+              }
+          });
+      });
+  });
+
+  $('#result').on('click', 'li', function() {
+      var click_text = $(this).text().split('|');
+      $('#search').val($.trim(click_text[0]));
+      $("#result").html('');
+  });
+});
+
+
+

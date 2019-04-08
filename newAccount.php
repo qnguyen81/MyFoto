@@ -67,8 +67,9 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-
 <body>
     <div class="container">
         <div class="row">
@@ -82,7 +83,7 @@
                         <label for="account">Account</label>
                         <input type="input" name="account" id="account" class="form-control" placeholder="Account">
                         <?php if($nameError): ?>
-                        <a class="float-right" id='nameError'>This name is already taken</a>
+                        <a class="float-right" name= "error"id='nameError'></a>
                         <?php endif?>
                     </div>
                     <div class="form-group">

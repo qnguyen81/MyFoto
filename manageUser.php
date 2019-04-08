@@ -24,6 +24,42 @@ require("connection.php");
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="styles.css">
+    <script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+            cache: false
+        });
+        $('#search').keyup(function() {
+            $('#result').html('');
+            $('#state').val('');
+            var searchField = $('#search').val();
+            var expression = new RegExp(searchField, "i");
+            $.getJSON('json.php', function(data) {
+                $.each(data, function(key, value) {
+                    if (value.account.search(expression) != -1 || value.lastName.search(
+                            expression) != -1) {
+                        $('#result').append(
+                            '<input type="hidden" name="id" value="' + value
+                            .userId +
+                            '"> <li class="list-group-item link-class"><img src="uploads/' +
+                            value.avatar +
+                            '" height="40" width="40" class="img-thumbnail" /> ' +
+                            value.account + ' | <span class="text-muted">' + value
+                            .lastName +
+                            '| <a class="float-right" href="editUser.php?id=' +
+                            value.userId + '" id="edit">Edit</a></span></li>');
+                    }
+                });
+            });
+        });
+
+        $('#result').on('click', 'li', function() {
+            var click_text = $(this).text().split('|');
+            $('#search').val($.trim(click_text[0]));
+            $("#result").html('');
+        });
+    });
+    </script>
 </head>
 
 <body>
@@ -47,16 +83,25 @@ require("connection.php");
         </div>
     </nav>
     <div class="container">
-        <h1 class="mt-5 mb-5">User List </h1>
-        <!-- <form action="editUser.php" method="post"> -->
-            <?php while($row = $stmt -> fetch()):?>
-            <div class="list-group">
-                <input type="hidden" name="id" value="<?=$row['userId']?>">
-                <li class="list-group-item"><?=$row['account']?> <a class="float-right" href= 'editUser.php?id=<?=$row['userId']?>' id="edit">Edit</a> </li>
+        <div class="container" style="width:900px;">
+            <h2 align="center">Search User</h2>
+            <h3 align="center">By account or last name.</h3>
+            <br /><br />
+            <div align="center">
+                <input type="text" name="search" id="search" placeholder="Search user Details" class="form-control" />
             </div>
-            <?php endwhile ?>
-        <!-- </form> -->
-
+            <ul class="list-group" id="result">
+                <?php while($row = $stmt -> fetch()):?>
+                <div class="list-group">
+                    <input type="hidden" name="id" value="<?=$row['userId']?>">
+                    <li class="list-group-item">
+                        <?= "<img src='uploads/".$row['avatar']."' class='img-thumbnail' height='40' width='40' alt='test' />"?>
+                        | <?=$row['account']?> <a class="float-right" href='editUser.php?id=<?=$row['userId']?>'
+                            id="edit">Edit</a> </li>
+                </div>
+                <?php endwhile ?></ul>
+            <br />
+        </div>
     </div>
 </body>
 
