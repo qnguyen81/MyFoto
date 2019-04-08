@@ -69,6 +69,7 @@
          if($_POST['captcha'] == $_SESSION['captcha_code']){
             echo "correct captcha";
             header("location:main.php");
+            
          }else{
             echo "Invalid captcha";
          }

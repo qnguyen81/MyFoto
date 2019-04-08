@@ -35,7 +35,7 @@ require("connection.php");
                     <a class="nav-link" name="Home" href="admin.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" name="post" href="#">Manage Post</a>
+                    <a class="nav-link" name="post" href="managePost.php">Manage Post</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" name="user" href="manageUser.php">Manage User</a>

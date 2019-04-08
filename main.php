@@ -2,11 +2,51 @@
     session_start();
     require('connection.php');
     require_once('composer\vendor\autoload.php');
-    print_r( $_SESSION['userId']);
+    print_r( $_SESSION['userId']);print_r( $_SESSION['user']);
+    if(isset($_SESSION['user']))
+    {
+        $user = $_SESSION['user'];
+        $query = "SELECT avatar FROM users WHERE account = :user";
+        $stmt = $db-> prepare($query);
+        $stmt->bindValue(":user",$user);
+        $stmt-> execute();
+
+        $query1 = "SELECT * FROM post p JOIN users u ON p.userId = u.userId ORDER BY timeStamp desc";
+        $stmt1 = $db-> prepare($query1);
+        $stmt1->bindValue(":user",$user);
+        $stmt1-> execute(); 
+
+
+        $comment = "SELECT * FROM comment  ORDER BY timeStamp desc";
+        $stmt2 = $db-> prepare($comment);
+        $stmt2-> execute(); 
+    }
+    else
+    {
+        header("location:Login.php");
+    }
+
+    if(isset($_POST['addComment']))
+    {
+        if(!empty($_POST['txtcomment']))
+        {
+            $user = $_SESSION['user'];
+            $userId = $_SESSION['userId'];
+            $comment =filter_input(INPUT_POST,'txtcomment', FILTER_SANITIZE_STRING);
+            $comt = "INSERT INTO comment (commenter, content,userId) VALUES (:user, :content,:userId)";
+            $stmt3 = $db->prepare($comt);
+            $stmt3->bindValue(":user",$user);
+            $stmt3->bindValue(":content",$comment);
+            $stmt3->bindValue(":userId",$userId);
+            $stmt3->execute();
+            header("location:main.php");
+        }
+    }
+
     if(isset($_POST['post']))
     {
         if(!empty($_POST['status'])){
-            $content = filter_input(INPUT_POST,'status', FILTER_SANITIZE_STRING);
+            $content = $_POST['status'];
             $user = $_SESSION['user'];
             $userId = $_SESSION['userId'];
             if(file_exists($_FILES['file']['tmp_name']) || is_uploaded_file($_FILES['file']['tmp_name']) )
@@ -56,25 +96,6 @@
             header("location:main.php");
         } 
     }
-
-        if(isset($_SESSION['user']))
-        {
-            $user = $_SESSION['user'];
-            $query = "SELECT avatar FROM users WHERE account = :user";
-            $stmt = $db-> prepare($query);
-            $stmt->bindValue(":user",$user);
-            $stmt-> execute();
-
-            $query1 = "SELECT * FROM post p JOIN users u ON p.userId = u.userId ORDER BY timeStamp desc";
-            $stmt1 = $db-> prepare($query1);
-            $stmt1->bindValue(":user",$user);
-            $stmt1-> execute(); 
-
-        }
-        else
-        {
-            header("location:Login.php");
-        }
 ?>
 
 <!DOCTYPE html>
@@ -89,15 +110,18 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=29mo2x4983hehdzlv8pqr10yx62i9kyyzi79sak0p9px2ykk"></script>
+    <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=29mo2x4983hehdzlv8pqr10yx62i9kyyzi79sak0p9px2ykk">
+    </script>
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
     <script type="text/javascript" src="function.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <script>tinymce.init({
+    <script>
+    tinymce.init({
         selector: "textarea",
-        forced_root_block : "",
-    });</script>
+        forced_root_block: "",
+    });
+    </script>
 
 </head>
 
@@ -161,11 +185,34 @@
                     <button type="submit" class="btn btn-outline-primary" name='like'> <i
                             class="far fa-thumbs-up"></i>Like</button>
                     <button type="submit" class="btn btn-outline-primary" name='comment'> <i
-                            class="fas fa-comments"></i>Comment</button>  
+                            class="fas fa-comments"></i>Comment</button>
                 </div>
-            </ul>
-        </div>
+                <hr>
+                <form action="main.php" method="post" name="commentForm">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Your comments" name="txtcomment" />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default" name="addComment">Add</button>
+                    </div>
+                </form>
+                <?php while($row1 = $stmt2 -> fetch()):?>
+                <div class="actionBox">
+                    <hr>
+                    <ul class="commentList">
+                        <li>
+                            <div class="commenterImage">
 
+                            </div>
+                            <div class=" commentText">
+                                <p class=""><?=$row1['content']?></p> <span
+                                    class="date sub-text"><?=$row1['timestamp']?></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <?php endwhile?>
+        </div>
         </div>
         <?php endwhile ?>
     </main>
