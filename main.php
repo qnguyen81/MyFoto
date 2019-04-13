@@ -2,6 +2,11 @@
     session_start();
     require('connection.php');
     require_once('composer\vendor\autoload.php');
+    include 'php-image-resize-master/lib/ImageResize.php';
+    include 'php-image-resize-master/lib/ImageResizeException.php';
+    use \Gumlet\ImageResize;
+    use \Gumlet\ImageResizeException;
+    
     print_r( $_SESSION['userId']);print_r( $_SESSION['user']);
     if(isset($_SESSION['user']))
     {
@@ -45,56 +50,74 @@
 
     if(isset($_POST['post']))
     {
-        if(!empty($_POST['status'])){
+        
+        $user = $_SESSION['user'];
+        $userId = $_SESSION['userId'];
+        $img="";
+        if(isset($_POST['status']))
+        {
             $content = $_POST['status'];
-            $user = $_SESSION['user'];
-            $userId = $_SESSION['userId'];
-            if(file_exists($_FILES['file']['tmp_name']) || is_uploaded_file($_FILES['file']['tmp_name']) )
-            {
-             function file_upload_path($original_filename, $upload_subfolder_name = 'uploads') {
-                $current_folder = dirname(__FILE__);
-                
-                $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
-                
-                return join(DIRECTORY_SEPARATOR, $path_segments);
-             }
-          
-             function file_is_valid($temporary_path, $new_path) {
-                 $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
-                 $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
-                 
-                 $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
-                 $actual_mime_type        = getimagesize($temporary_path)['mime'];
-                 
-                 $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
-                 $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
-                 
-                 return $file_extension_is_valid && $mime_type_is_valid;
-             }
-          
-             $file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
-             $upload_error_detected = isset($_FILES['file']) && ($_FILES['file']['error'] > 0);
-          
-             if ($file_upload_detected) { 
-                 $file_filename        = $_FILES['file']['name'];
-                 $temporary_file_path  = $_FILES['file']['tmp_name'];
-                 $new_file_path        = file_upload_path($file_filename);
-                 if (file_is_valid($temporary_file_path, $new_file_path)) {
-                     move_uploaded_file($temporary_file_path, $new_file_path);
-                     $img = $_FILES['file']['name'];
-                 }
-             }
-            }
+        }
+        else
+        {
+            $content=" s";
+        }
 
-            $query2 = "INSERT INTO post (userName, content,userId,picture) VALUES (:user, :content,:userId,:picture)";
-            $stmt2 = $db->prepare($query2);
-            $stmt2->bindValue(":user",$user);
-            $stmt2->bindValue(":picture",$img);
-            $stmt2->bindValue(":content",$content);
-            $stmt2->bindValue(":userId",$userId);
-            $stmt2->execute();
-            header("location:main.php");
+        if(file_exists($_FILES['file']['tmp_name']) || is_uploaded_file($_FILES['file']['tmp_name']) )
+        {
+         function file_upload_path($original_filename, $upload_subfolder_name = 'uploads') {
+            $current_folder = dirname(__FILE__);
+            
+            $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
+            
+            return join(DIRECTORY_SEPARATOR, $path_segments);
+         }
+      
+         function file_is_valid($temporary_path, $new_path) {
+             $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
+             $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
+             
+             $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
+             $actual_mime_type        = getimagesize($temporary_path)['mime'];
+             
+             $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
+             $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
+             
+             return $file_extension_is_valid && $mime_type_is_valid;
+         }
+      
+         $file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
+         $upload_error_detected = isset($_FILES['file']) && ($_FILES['file']['error'] > 0);
+      
+         if ($file_upload_detected) { 
+             $file_filename        = $_FILES['file']['name'];
+             $temporary_file_path  = $_FILES['file']['tmp_name'];
+             $new_file_path        = file_upload_path($file_filename);
+             if (file_is_valid($temporary_file_path, $new_file_path)) {
+                 move_uploaded_file($temporary_file_path, $new_file_path);
+                 $img = $_FILES['file']['name'];
+             }
+             if ($_FILES['file']['type'] != "application/pdf") {
+                    $file_extension   = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+                    $file_name   = pathinfo($_FILES['file']['name'], PATHINFO_FILENAME);
+           
+                       $image = new ImageResize($_FILES['file']['name']);
+                       $image->resizeToWidth(400);
+                       $image->save('uploads/'. $file_name . '_medium.' . $file_extension);
+           
+                       $image->resizeToWidth(50);
+                       $image->saveImage('uploads/'. $file_name . '_thumbnail.' . $file_extension);
+                }
+         }                   
         } 
+        $query2 = "INSERT INTO post (userName, content,userId,picture) VALUES (:user, :content,:userId,:picture)";
+        $stmt2 = $db->prepare($query2);
+        $stmt2->bindValue(":user",$user);
+        $stmt2->bindValue(":picture",$img);
+        $stmt2->bindValue(":content",$content);
+        $stmt2->bindValue(":userId",$userId);
+        $stmt2->execute();
+        header("location:main.php");
     }
 ?>
 
@@ -172,7 +195,7 @@
                     <h5> <?= "<img src='uploads/".$row['avatar']."' class='img' alt='test' />" ?>
                         <?=$row['userName']?><small>
                             <?=$row['timeStamp']?>
-                        </small></h5>
+                        </small></span></li></h5>
                 </li>
                 <li><?=$row['content']?></li>
                 <?php if($row['picture']): ?>

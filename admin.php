@@ -45,9 +45,6 @@
                     <a class="nav-link" name="Home" href="admin.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" name="post" href="managePost.php">Manage Post</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" name="user" href="manageUser.php">Manage User</a>
                 </li>
                 <li class="nav-item">

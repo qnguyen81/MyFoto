@@ -4,10 +4,17 @@ require("connection.php");
 print_r($_GET['id']);
 if(isset($_SESSION['user']))
 {
+    $id= $_GET['id'];
+    $queryPost = "SELECT * FROM post WHERE userId = :id ORDER BY timeStamp desc";
+    $stmt4 = $db-> prepare($queryPost);
+    $stmt4->bindValue(":id",$id);
+    $stmt4-> execute(); 
+
+
     if(isset($_POST['delete']))
     {
     // $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
-    $id= $_GET['id'];
+
       $query = "DELETE FROM users WHERE userId = :id";
         $statement = $db->prepare($query);
       $statement->bindValue(':id',$id);
@@ -59,7 +66,7 @@ else
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="styles.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="edit.css">
 </head>
 
 <body>
@@ -95,19 +102,21 @@ else
                                 </div>
                             </div>
                             <form action="actions.php" method="post">
-                            <?php while($row = $stmt -> fetch()):?>
-                            <input type="hidden" name="id" value="<?=$row['userId']?>">
-                            <input type="hidden" name="account" value="<?=$row['account']?>">
+                                <?php while($row = $stmt -> fetch()):?>
+                                <input type="hidden" name="id" value="<?=$row['userId']?>">
+                                <input type="hidden" name="account" value="<?=$row['account']?>">
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">First name:</label>
                                     <div class="col-lg-8">
-                                        <input class="form-control" name='firstName' type="text" value='<?=$row['firstName']?>'>
+                                        <input class="form-control" name='firstName' type="text"
+                                            value='<?=$row['firstName']?>'>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">Last name:</label>
                                     <div class="col-lg-8">
-                                        <input class="form-control" name='lastName' type="text" value='<?=$row['lastName']?>'>
+                                        <input class="form-control" name='lastName' type="text"
+                                            value='<?=$row['lastName']?>'>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -119,16 +128,43 @@ else
                                 <div class="form-group">
                                     <label class="col-md-3 control-label">Username:</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" name='account' type="text" value='<?=$row['account']?>'>
+                                        <input class="form-control" name='account' type="text"
+                                            value='<?=$row['account']?>'>
                                     </div>
                                 </div>
-                                    <hr>
-                                        <input type="submit" class="btn btn-outline-primary" name='save' value = 'Save Change'  onclick="return confirm('Are you sure you wish to modify this User?')">
-                                        <input type="submit" value="Delete" class="btn btn-outline-danger" name='delete' onclick="return confirm('Are you sure you wish to delete this User?')">
+                                <hr>
+                                <input type="submit" class="btn btn-outline-primary" name='save' value='Save Change'
+                                    onclick="return confirm('Are you sure you wish to modify this User?')">
+                                <input type="submit" value="Delete" class="btn btn-outline-danger" name='delete'
+                                    onclick="return confirm('Are you sure you wish to delete this User?')">
                                 <?php endwhile ?>
                             </form>
                         </div>
+                        <hr>
+                        <h2>All Posts</h2>
+                        <?php while($row = $stmt4 -> fetch()):?>
+                        <div class='post'>
+                            <ul>
+                                <li>
+                                    <h5><?=$row['userName']?><small>
+                                            <?=$row['timeStamp']?>
+                                        </small></span>
+                                    </h5>   
+                                </li>
+                                
+                                </li>
+                                <li><?=$row['content']?></li>
+                                <?php if($row['picture']): ?>
+                                <div class="square">
+                                   <li> <?= "<img src='uploads/".$row['picture']."' class='img-responsive center-block'/>" ?></li>
+                                </div>
+                                <?php endif?>
+                                <hr>
+                        </div>
                     </div>
+                    <?php endwhile ?>
+                </div>
+                
 </body>
 
 </html>

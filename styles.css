@@ -4,6 +4,32 @@
     height: 35px;
 }
 
+.img-responsive
+{
+  width: 200px;
+}
+
+.square {
+    height: auto;
+    width: 100%;
+    padding:10px;
+    margin: 0 auto;
+}
+
+main{
+    padding: 10px 20px;
+    width: 60%;
+    min-height: 400px;
+    min-width: 400px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 5px 55px 50px -20px #b6b6b6; 
+}
+ul {
+    padding: 0;
+    list-style: none;
+  }
+
 #form {
     -webkit-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
@@ -23,5 +49,182 @@
     padding: 50px;
 }
 
+body {
+    display: flex;
+    justify-content: center; 
+    min-height: 100vh;
+  }
+main{
+    padding: 10px 20px;
+    width: 60%;
+    min-height: 400px;
+    min-width: 400px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 5px 55px 50px -20px #b6b6b6; 
+}
+ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  a:link
+  {
+    color: gray;
+    text-decoration: none;
+  }
+  .square {
+    height: auto;
+    width: 100%;
+    padding:10px;
+    margin: 0 auto;
+}
+
+.img-responsive
+{
+  max-width: 100%;
+    max-height: 100%;
+}
+  .myfoto {
+    display: flex;
+  } 
+
+  .nav-link{
+    color: black;
+    padding: 0;
+    margin: 0;
+  }
+
+  .twitter__bird {
+    margin-left: auto;
+    margin-right: auto
+  }
+
+  .myfoto {
+    height: 46px;
+    align-items: center;
+    padding: 0 10px;
+    border: 1px solid rgba(238,238,238 ,1);
+    border-radius: 5px;
+    color: rgba(117,117,117 ,1);
+    box-shadow: 5px 10px 20px -20px rgba(85,172,238 ,1);
+  }
+  .myfoto li {
+    cursor: pointer;
+    height: auto;
+  }
+  .myfoto li a{
+    color: rgba(117,117,117 ,1);
+  }
+
+  .myfoto li a:hover{
+    color: rgba(85,172,238 ,1);
+  }
+  
+  .myfoto li:hover{
+    color: rgba(85,172,238 ,1);
+  }
+  .twitter__bird {
+    color: rgba(85,172,238 ,1);
+    font-size: 1.5em;
+  }
+  .myfoto li:not(:last-child):not(.twitter__bird) {
+    margin-right: 10px;
+  }
+  .myfoto li  i:not(.fa-spa):not(.fa-search):not(.fa-user-circle) {
+    margin-right: 3px;
+  }
+
+  /* .fa-user-circle
+  {
+    font-size: 1.3em; 
+  } */
+  .myfoto li > button{
+    font-size: 1em;
+    border: 0;
+    background: rgba(85,172,238 ,1);
+    color: #fff;
+    border-radius: 100px;
+  }
+
+  .post
+{ 
+    width: 65%;
+    margin: 30px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(238,238,238 ,1);
+    border-radius: 5px;
+    color: rgba(117,117,117 ,1);
+    box-shadow: 5px 10px 20px -20px rgba(85,172,238 ,1);
+}
+
+.img
+{
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}
+.btn
+{   
+  margin: 0;
+    padding: 0px;
+    font-size: 12px;
+    width: 80px;  height: 25px;
+}
+
+.post
+{
+    margin-right: 10px;
+}
+
+/* .like
+{
+  display: flex;
+  justify-content: space-around;
+  height: 30px;
+} */
+
+small
+{
+    font-size: 10px;
+}
+
+.commentList {
+    padding:0;
+    list-style:none;
+    max-height:200px;
+    overflow:auto;
+}
+.commentList li {
+    margin:0;
+    margin-top:10px;
+}
+.commentList li > div {
+    display:table-cell;
+}
+.commenterImage {
+    width:30px;
+    margin-right:5px;
+    height:100%;
+    float:left;
+}
+.commenterImage img {
+    width:100%;
+    border-radius:50%;
+}
+.commentText p {
+    margin:0;
+}
+.sub-text {
+    color:#aaa;
+    font-family:verdana;
+    font-size:11px;
+}
+.actionBox {
+    border-top:1px dotted #bbb;
+    padding:10px;
+}
 
 
