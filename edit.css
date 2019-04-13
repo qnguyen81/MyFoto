@@ -15,7 +15,7 @@ max-height: 100%;
 { 
     width: 65%;
     margin: 30px;
-    padding: 5px;
+    padding: 20px;
     display: flex;
     align-items: center;
     border: 1px solid rgba(238,238,238 ,1);

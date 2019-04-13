@@ -1,7 +1,6 @@
 <?php 
 session_start();
 require("connection.php");
-print_r($_GET['id']);
 if(isset($_SESSION['user']))
 {
     $id= $_GET['id'];
@@ -142,6 +141,11 @@ else
                         </div>
                         <hr>
                         <h2>All Posts</h2>
+                        
+                    </div>
+                    
+                </div>
+              
                         <?php while($row = $stmt4 -> fetch()):?>
                         <div class='post'>
                             <ul>
@@ -160,10 +164,17 @@ else
                                 </div>
                                 <?php endif?>
                                 <hr>
-                        </div>
-                    </div>
+                                <form action="actions.php" method="post">
+                                <input type="hidden" name="postId" value="<?=$row['postId']?>">
+                                <input type="hidden" name="acctId" value="<?=$_GET['id']?>">
+                                <input type="submit" value="Delete Post" class="btn btn-outline-danger" name='deletePost'
+                                    onclick="return confirm('Are you sure you wish to delete this Post?')">
+                                <input type="submit" value="Delete Picture" class="btn btn-outline-danger" name='deletePic'
+                                    onclick="return confirm('Are you sure you wish to delete this Picture?')">
+                                </form>
+                                </div>
                     <?php endwhile ?>
-                </div>
+                    
                 
 </body>
 

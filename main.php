@@ -1,11 +1,11 @@
 <?php 
-    session_start();
-    require('connection.php');
-    require_once('composer\vendor\autoload.php');
     include 'php-image-resize-master/lib/ImageResize.php';
     include 'php-image-resize-master/lib/ImageResizeException.php';
+    require('connection.php');
+    require_once('composer\vendor\autoload.php');
     use \Gumlet\ImageResize;
     use \Gumlet\ImageResizeException;
+    session_start();
     
     print_r( $_SESSION['userId']);print_r( $_SESSION['user']);
     if(isset($_SESSION['user']))
@@ -96,18 +96,17 @@
              if (file_is_valid($temporary_file_path, $new_file_path)) {
                  move_uploaded_file($temporary_file_path, $new_file_path);
                  $img = $_FILES['file']['name'];
+
+                 $imgs = "uploads/{$_FILES['file']['name']}";
+                 $image = new ImageResize($imgs); 
+            $image->resizeToWidth(400) ;
+             $image->save("uploads/medium_{$_FILES['file']['name']}");
+
+             $image = new ImageResize($imgs); 
+             $image->resizeToWidth(50);
+             $image->save("uploads/thumbnail_{$_FILES['file']['name']}");
              }
-             if ($_FILES['file']['type'] != "application/pdf") {
-                    $file_extension   = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-                    $file_name   = pathinfo($_FILES['file']['name'], PATHINFO_FILENAME);
-           
-                       $image = new ImageResize($_FILES['file']['name']);
-                       $image->resizeToWidth(400);
-                       $image->save('uploads/'. $file_name . '_medium.' . $file_extension);
-           
-                       $image->resizeToWidth(50);
-                       $image->saveImage('uploads/'. $file_name . '_thumbnail.' . $file_extension);
-                }
+                   
          }                   
         } 
         $query2 = "INSERT INTO post (userName, content,userId,picture) VALUES (:user, :content,:userId,:picture)";

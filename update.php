@@ -20,4 +20,17 @@ if(!empty($_POST['id']) && isset($_POST['save'])){
     header("Location: manageUser.php");
     EXIT;
 }
+
+if (isset($_POST['deletePic'])) {
+    $pic   ="";
+    $postId = filter_input(INPUT_POST, 'postId', FILTER_SANITIZE_NUMBER_INT);
+    $acctId = filter_input(INPUT_POST, 'acctId', FILTER_SANITIZE_NUMBER_INT);
+        $query = "UPDATE post SET picture =:pic WHERE postId = :id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':pic', $pic);
+    $statement->bindValue(':id', $postId, PDO::PARAM_INT);
+       $statement->execute();
+       header("Location: editUser.php?id=$acctId");
+    EXIT;
+}
 ?>
