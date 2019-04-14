@@ -33,4 +33,18 @@ if (isset($_POST['deletePic'])) {
        header("Location: editUser.php?id=$acctId");
     EXIT;
 }
+
+if (isset($_POST['deletePic1'])) {
+    $pic   ="";
+    $postId = filter_input(INPUT_POST, 'postId', FILTER_SANITIZE_NUMBER_INT);
+    $acctId = filter_input(INPUT_POST, 'acctId', FILTER_SANITIZE_NUMBER_INT);
+    $acc = filter_input(INPUT_POST, 'acc', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $query = "UPDATE post SET picture =:pic WHERE postId = :id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':pic', $pic);
+    $statement->bindValue(':id', $postId, PDO::PARAM_INT);
+       $statement->execute();
+       header("Location: personal.php?id=$acctId&acc=$acc");
+    EXIT;
+}
 ?>

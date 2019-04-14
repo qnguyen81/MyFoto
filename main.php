@@ -8,13 +8,19 @@
     session_start();
     
     print_r( $_SESSION['userId']);print_r( $_SESSION['user']);
+    $edit=false;
     if(isset($_SESSION['user']))
     {
+        $edit=true;
         $user = $_SESSION['user'];
         $query = "SELECT avatar FROM users WHERE account = :user";
         $stmt = $db-> prepare($query);
         $stmt->bindValue(":user",$user);
         $stmt-> execute();
+
+        $query = "SELECT * FROM users ";
+        $stmt3 = $db-> prepare($query);
+        $stmt3-> execute();
 
         $query1 = "SELECT * FROM post p JOIN users u ON p.userId = u.userId ORDER BY timeStamp desc";
         $stmt1 = $db-> prepare($query1);
@@ -126,7 +132,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>MyFoto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -183,7 +189,7 @@
             <li class="twitter__bird"><i class="fas fa-spa"></i></li>
             <li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i
                         class="fas fa-plus-square"></i></button></li>
-            <li><i class="fas fa-user-alt" class="nav-item dropdown"></i></li>
+            <li><a class="fas fa-user-alt" href='personal.php?id=<?=$_SESSION['userId']?>&acc=<?=$_SESSION['user']?>'></a></li>
             <li><a class="fas fa-sign-out-alt" href="logout.php"></a></li>
         </ul>
         <!-- The Modal -->

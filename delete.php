@@ -18,5 +18,17 @@
    		$statement->execute();
    		header("Location: editUser.php?id=$acctId");
     	EXIT;
+	}
+	
+	if (isset($_POST['deletePost1'])) {
+		$postId = filter_input(INPUT_POST, 'postId', FILTER_SANITIZE_NUMBER_INT);
+		$acctId = filter_input(INPUT_POST, 'acctId', FILTER_SANITIZE_NUMBER_INT);
+		$acc = filter_input(INPUT_POST, 'acc', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+   	 	$query = "DELETE FROM post WHERE postId = :id LIMIT 1";
+   		 $statement = $db->prepare($query);
+    	$statement->bindValue(':id', $postId, PDO::PARAM_INT);
+   		$statement->execute();
+   		header("Location: personal.php?id=$acctId&acc=$acc");
+    	EXIT;
     }
 ?>

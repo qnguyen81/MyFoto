@@ -1,12 +1,28 @@
 <?php 
     session_start();
     require('connection.php');
-        $query = "SELECT * FROM users";
+    $home=false;
+    $edit = false;
+    if(isset($_SESSION['user']))
+    {
+        $home=true;
+    }
+    if(isset($_SESSION['user']) && $_SESSION['userId'] == $_GET['id'])
+    {
+        $edit = true;
+    }
+
+    print_r($_GET['id']);
+    $id= $_GET['id'];
+        $query = "SELECT * FROM users WHERE userId = :id";
         $stmt = $db-> prepare($query);
+        $stmt->bindValue(":id",$id);
         $stmt-> execute();
 
-        $query1 = "SELECT * FROM post p JOIN users u ON p.userId = u.userId ORDER BY timeStamp desc";
+        $id= $_GET['id'];
+        $query1 = "SELECT * FROM post p JOIN users u ON p.userId = u.userId WHERE p.userId = :user ORDER BY timeStamp desc";
         $stmt1 = $db-> prepare($query1);
+        $stmt1->bindValue(":user",$id);
         $stmt1-> execute(); 
 
 
@@ -29,34 +45,41 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=29mo2x4983hehdzlv8pqr10yx62i9kyyzi79sak0p9px2ykk">
     </script>
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="listUser.css">
     <script type="text/javascript" src="function.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <script>
-    tinymce.init({
-        selector: "textarea",
-        forced_root_block: "",
-    });
-    </script>
 
 </head>
 
 <body>
     <main>
         <ul class="myfoto" role="navigation">
-            <li><a name="Home" href="index.php"><i class="fas fa-home"></i>Home</a></li>
+        <?php if($home==true): ?>
+            <li><a name="Home" href="main.php"><i class="fas fa-home"></i>Home</a></li>
+        <?php else: ?>
+        <li><a name="Home" href="index.php"><i class="fas fa-home"></i>Home</a></li>
+        <?php endif ?>
             <li class="twitter__bird"><i class="fas fa-spa"></i></li>
-            <li><a class="fas fa-user-alt" href="login.php"></a></li>
+            <?php if($home==true): ?>
+            <li><a class="fas fa-sign-out-alt" href="logout.php"></a></li>
+        <?php else: ?>
+        <li><a class="fas fa-user-alt" href="login.php"></a></li>
+        <?php endif ?>
+            
             <li><a class="fas fa-list-alt" href="ViewUserList.php">User</a></li>
         </ul>
-        <!-- The Modal -->
+        <?php while($row = $stmt -> fetch()):?>
+        <div class="card">
+  <p><?= "<img src='uploads/".$row['avatar']."' style='width:100%' />" ?><?=$_GET['acc']?></p>
+</div>
+<hr>
+        <?php endwhile?>
         <?php while($row = $stmt1 -> fetch()):?>
         <div class='post'>
             <ul>
                 <li>
-                    <h5> <?= "<img src='uploads/".$row['avatar']."' class='img' alt='test' />" ?>
-                        <?=$row['userName']?><small>
+                    <h5><small>
                             <?=$row['timeStamp']?>
                         </small></span></li></h5>
                 </li>
@@ -65,6 +88,17 @@
                 <div class="square">
                     <?= "<img src='uploads/".$row['picture']."' class='img-responsive center-block'/>" ?>
                 </div>
+                <?php endif?>
+                <?php if($edit == true): ?>
+                <form action="actions.php" method="post">
+                                <input type="hidden" name="postId" value="<?=$row['postId']?>">
+                                <input type="hidden" name="acctId" value="<?=$_GET['id']?>">
+                                <input type="hidden" name="acc" value="<?=$_GET['acc']?>">
+                                <input type="submit" value="Delete Post" class="btn btn-outline-danger" name='deletePost1'
+                                    onclick="return confirm('Are you sure you wish to delete this Post?')">
+                                <input type="submit" value="Delete Picture" class="btn btn-outline-danger" name='deletePic1'
+                                    onclick="return confirm('Are you sure you wish to delete this Picture?')">
+                                </form>
                 <?php endif?>
                 <?php while($row1 = $stmt2 -> fetch()):?>
                 <div class="actionBox">
