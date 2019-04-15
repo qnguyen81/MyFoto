@@ -11,6 +11,20 @@
     $edit=false;
     if(isset($_SESSION['user']))
     {
+        $page = filter_input(INPUT_GET,'page', FILTER_SANITIZE_NUMBER_INT);
+        if($page=="" || $page == "1")
+        {
+            $page = 0;
+        }
+    $sort =  filter_input(INPUT_GET,'ord', FILTER_SANITIZE_NUMBER_INT); 
+        if($sort =="1")
+        {
+            $ord= "desc";
+        }
+        else
+        {
+            $ord= "";
+        }
         $edit=true;
         $user = $_SESSION['user'];
         $query = "SELECT avatar FROM users WHERE account = :user";
@@ -22,7 +36,7 @@
         $stmt3 = $db-> prepare($query);
         $stmt3-> execute();
 
-        $query1 = "SELECT * FROM post p JOIN users u ON p.userId = u.userId ORDER BY timeStamp desc";
+        $query1 = "SELECT * FROM post p JOIN users u ON p.userId = u.userId ORDER BY timeStamp $ord LIMIT $page,5";
         $stmt1 = $db-> prepare($query1);
         $stmt1->bindValue(":user",$user);
         $stmt1-> execute(); 
@@ -41,16 +55,18 @@
     {
         if(!empty($_POST['txtcomment']))
         {
+            $postId = filter_input(INPUT_POST,'postId', FILTER_SANITIZE_NUMBER_INT);
             $user = $_SESSION['user'];
             $userId = $_SESSION['userId'];
             $comment =filter_input(INPUT_POST,'txtcomment', FILTER_SANITIZE_STRING);
-            $comt = "INSERT INTO comment (commenter, content,userId) VALUES (:user, :content,:userId)";
+            $comt = "INSERT INTO comment (commenter, content,userId,postId) VALUES (:user, :content,:userId,:postId)";
             $stmt3 = $db->prepare($comt);
             $stmt3->bindValue(":user",$user);
             $stmt3->bindValue(":content",$comment);
             $stmt3->bindValue(":userId",$userId);
+            $stmt3->bindValue(":postId",$postId);
             $stmt3->execute();
-            header("location:main.php");
+            header("location:main.php?page=0&ord=1");
         }
     }
 
@@ -122,7 +138,7 @@
         $stmt2->bindValue(":content",$content);
         $stmt2->bindValue(":userId",$userId);
         $stmt2->execute();
-        header("location:main.php");
+        header("location:main.php?page=0&ord=1");
     }
 ?>
 
@@ -185,14 +201,21 @@
     </div>
     <main>
         <ul class="myfoto" role="navigation">
-            <li><a name="Home" href="main.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a name="Home" href="main.php?page=0&ord=1"><i class="fas fa-home"></i>Home</a></li>
             <li class="twitter__bird"><i class="fas fa-spa"></i></li>
             <li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i
                         class="fas fa-plus-square"></i></button></li>
-            <li><a class="fas fa-user-alt" href='personal.php?id=<?=$_SESSION['userId']?>&acc=<?=$_SESSION['user']?>'></a></li>
+            <li><a class="fas fa-list-alt" href="ViewUserList.php">User</a></li>
+            <li><a class="fas fa-user-alt"
+                    href='personal.php?id=<?=$_SESSION['userId']?>&acc=<?=$_SESSION['user']?>'></a></li>
             <li><a class="fas fa-sign-out-alt" href="logout.php"></a></li>
         </ul>
-        <!-- The Modal -->
+        <label for="dropdown">Order By</label>
+        <select name="dropdown" onchange="location = this.value;">
+            <option value="#"></option>
+            <option value="main.php?page=<?=$page?>&ord=1">Newest</option>
+            <option value="main.php?page=<?=$page?>&ord=2">Oldest</option>
+        </select>
         <?php while($row = $stmt1 -> fetch()):?>
         <div class='post'>
             <ul>
@@ -200,7 +223,9 @@
                     <h5> <?= "<img src='uploads/".$row['avatar']."' class='img' alt='test' />" ?>
                         <?=$row['userName']?><small>
                             <?=$row['timeStamp']?>
-                        </small></span></li></h5>
+                        </small></span>
+                </li>
+                </h5>
                 </li>
                 <li><?=$row['content']?></li>
                 <?php if($row['picture']): ?>
@@ -218,6 +243,7 @@
                 <hr>
                 <form action="main.php" method="post" name="commentForm">
                     <div class="form-group">
+                        <input type="hidden" name="postId" value="<?=$row['postId']?>">
                         <input class="form-control" type="text" placeholder="Your comments" name="txtcomment" />
                     </div>
                     <div class="form-group">
@@ -243,6 +269,14 @@
         </div>
         </div>
         <?php endwhile ?>
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="main.php?page=0&ord=1">1</a></li>
+            <li class="page-item"><a class="page-link" href="main.php?page=5&ord=1">2</a></li>
+            <li class="page-item"><a class="page-link" href="main.php?page=10&ord=1">3</a></li>
+            <li class="page-item"><a class="page-link" href="main.php?page=15&ord=1">4</a></li>
+            <li class="page-item"><a class="page-link" href="main.php?page=20&ord=1">5</a></li>
+            <li class="page-item"><a class="page-link" href="main.php?page=25&ord=1">6</a></li>
+        </ul>
     </main>
 </body>
 

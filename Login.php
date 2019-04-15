@@ -22,7 +22,7 @@ require('connection.php');
                }
                else
                {
-                  header("location:main.php");
+                  header("location:main.php?page=0&ord=1");
                   $_SESSION['user']= $user;
                   $_SESSION['userId'] = $row['userId'];
                }

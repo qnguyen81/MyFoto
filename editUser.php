@@ -4,7 +4,7 @@ require("connection.php");
 if(isset($_SESSION['user']))
 {
     $id= $_GET['id'];
-    $queryPost = "SELECT * FROM post WHERE userId = :id ORDER BY timeStamp desc";
+    $queryPost = "SELECT * FROM post p JOIN users u ON p.userId = u.userId WHERE p.userId = :id ORDER BY timeStamp desc";
     $stmt4 = $db-> prepare($queryPost);
     $stmt4->bindValue(":id",$id);
     $stmt4-> execute(); 
@@ -76,9 +76,6 @@ else
                 <li class="nav-item">
                     <a class="nav-link" name="Home" href="admin.php">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" name="post" href="#">Manage Post</a>
-                </li>
                 <li class="nav-item active">
                     <a class="nav-link" name="user" href="manageUser.php">Manage User</a>
                 </li>
@@ -141,41 +138,46 @@ else
                         </div>
                         <hr>
                         <h2>All Posts</h2>
-                        
+
                     </div>
-                    
+
                 </div>
-              
-                        <?php while($row = $stmt4 -> fetch()):?>
-                        <div class='post'>
-                            <ul>
-                                <li>
-                                    <h5><?=$row['userName']?><small>
-                                            <?=$row['timeStamp']?>
-                                        </small></span>
-                                    </h5>   
-                                </li>
-                                
-                                </li>
-                                <li><?=$row['content']?></li>
-                                <?php if($row['picture']): ?>
-                                <div class="square">
-                                   <li> <?= "<img src='uploads/".$row['picture']."' class='img-responsive center-block'/>" ?></li>
-                                </div>
-                                <?php endif?>
-                                <hr>
-                                <form action="actions.php" method="post">
-                                <input type="hidden" name="postId" value="<?=$row['postId']?>">
-                                <input type="hidden" name="acctId" value="<?=$_GET['id']?>">
-                                <input type="submit" value="Delete Post" class="btn btn-outline-danger" name='deletePost'
-                                    onclick="return confirm('Are you sure you wish to delete this Post?')">
-                                <input type="submit" value="Delete Picture" class="btn btn-outline-danger" name='deletePic'
-                                    onclick="return confirm('Are you sure you wish to delete this Picture?')">
-                                </form>
-                                </div>
-                    <?php endwhile ?>
-                    
-                
+
+                <?php while($row = $stmt4 -> fetch()):?>
+                <div class='post'>
+                    <ul>
+                        <li>
+                            <h5><?=$row['userName']?><small>
+                                    <?=$row['timeStamp']?>
+                                </small></span>
+                            </h5>
+                        </li>
+
+                        </li>
+                        <li><?=$row['content']?><a class="float-right"
+                                href='edit.php?id=<?=$row['postId']?>&user=<?=$row['userId']?>&acc=<?=$row['account']?>&a=y'
+                                id="edit">Edit</a></li>
+                        <?php if($row['picture']): ?>
+                        <div class="square">
+                            <li> <?= "<img src='uploads/".$row['picture']."' class='img-responsive center-block'/>" ?>
+                            </li>
+                        </div>
+                        <?php endif?>
+                        <hr>
+                        <form action="actions.php" method="post">
+                            <input type="hidden" name="postId" value="<?=$row['postId']?>">
+                            <input type="hidden" name="acctId" value="<?=$_GET['id']?>">
+                            <input type="submit" value="Delete Post" class="btn btn-outline-danger" name='deletePost'
+                                onclick="return confirm('Are you sure you wish to delete this Post?')">
+                            <?php if($row['picture']): ?>
+                            <input type="submit" value="Delete Picture" class="btn btn-outline-danger" name='deletePic'
+                                onclick="return confirm('Are you sure you wish to delete this Picture?')">
+                            <?php endif?>
+                        </form>
+                </div>
+                <?php endwhile ?>
+
+
 </body>
 
 </html>

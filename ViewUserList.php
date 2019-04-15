@@ -2,10 +2,16 @@
 session_start();
 require("connection.php");
 $admin= "a";
+$home=false;
     $query = "SELECT * FROM users WHERE role != :admin";
     $stmt = $db-> prepare($query);
     $stmt->bindValue(":admin",$admin);
     $stmt-> execute();
+
+    if(isset($_SESSION['user']))
+    {
+        $home = true;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -30,9 +36,17 @@ $admin= "a";
 <body>
 <main>
     <ul class="myfoto" role="navigation">
-            <li><a name="Home" href="index.php"><i class="fas fa-home"></i>Home</a></li>
+    <?php if($home==true): ?>
+            <li><a name="Home" href="main.php?page=0&ord=1"><i class="fas fa-home"></i>Home</a></li>
+        <?php else: ?>
+        <li><a name="Home" href="index.php"><i class="fas fa-home"></i>Home</a></li>
+        <?php endif ?>
             <li class="twitter__bird"><i class="fas fa-spa"></i></li>
-            <li><a class="fas fa-user-alt" href="login.php"></a></li>
+               <?php if($home==true): ?>
+            <li><a class="fas fa-sign-out-alt" href="logout.php"></a></li>
+        <?php else: ?>
+        <li><a class="fas fa-user-alt" href="login.php"></a></li>
+        <?php endif ?>
             <li><a class="fas fa-list-alt" href="ViewUserList.php">User</a></li>
         </ul>
     <div class="container">

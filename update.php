@@ -47,4 +47,36 @@ if (isset($_POST['deletePic1'])) {
        header("Location: personal.php?id=$acctId&acc=$acc");
     EXIT;
 }
+
+if(isset($_POST['save1'])){
+    $id = filter_input(INPUT_POST, 'postId', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $status = $_POST['status'];
+    $acctId = filter_input(INPUT_POST, 'acctId', FILTER_SANITIZE_NUMBER_INT);
+    $acc = filter_input(INPUT_POST, 'acc', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+    $update = "UPDATE post SET content =:content WHERE postId = :id";
+
+    $stmt1 = $db->prepare($update);
+    $stmt1-> bindValue(":content",$status);
+    $stmt1-> bindValue(":id",$id);
+    $stmt1-> execute();
+    header("Location: personal.php?id=$acctId&acc=$acc");
+    EXIT;
+}
+
+if(isset($_POST['save2'])){
+    $id = filter_input(INPUT_POST, 'postId', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $status = $_POST['status'];
+    $acctId = filter_input(INPUT_POST, 'acctId', FILTER_SANITIZE_NUMBER_INT);
+    $acc = filter_input(INPUT_POST, 'acc', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+    $update = "UPDATE post SET content =:content WHERE postId = :id";
+
+    $stmt1 = $db->prepare($update);
+    $stmt1-> bindValue(":content",$status);
+    $stmt1-> bindValue(":id",$id);
+    $stmt1-> execute();
+    header("Location: editUser.php?id=$acctId&acc=$acc");
+    EXIT;
+}
 ?>
